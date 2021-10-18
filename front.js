@@ -6,33 +6,44 @@ class front extends G_G{
 	}
 	define(){
 		const _ = this;
-		_.a = _.set({ test: 1 });
+		_.defined = _.set({
+			test: 1,
+			trTpl: _.trTpl()
+		});
+	}
+	tableTpl(){
+		return `
+		<div class="container">
+			<table id="table">
+			${this.defined.trTpl}
+			</table>
+		</div>
+	`;
+	}
+	trTpl(){
+		let tpl = ``;
+			for(let i=0; i < 10;i++){
+				tpl+= `
+			<tr>
+				<td>${i}</td>
+			</tr>
+		`;
+		}
+		return tpl;
 	}
 	init(){
 		const _ = this;
 		_.view(()=>{
-			//document.querySelector('#test').textContent = _.a.test;
+			let strTplDiv = document.querySelector('#strTpl');
+			strTplDiv.innerHTML = '';
+			strTplDiv.append(_.el(_.tableTpl()));
 		});
-		_.a.test = 30;
 	}
 }
 let F = new front();
 
-function tableTpl(){
-	return `
-		<div class="container">
-			<table>
-			</table>
-		</div>
-	`;
-}
-function trTpl(td){
-	return `
-		<tr>
-			<td>${td}</td>
-		</tr>
-	`;
-}
+window['F'] = F;
+
 
 
 function domTpl(){
@@ -44,31 +55,8 @@ function domTpl(){
 	return domTpl;
 }
 
-/*for(let i=0; i< 10;i++){
-	console.time('strTpl');
-	let domTplDiv = document.querySelector('#domTpl');
-	for(let i = 0; i < 100; i++){
-		domTplDiv.append(domTpl())
-	}
-	console.timeEnd('strTpl');
-}*/
 
-/*
-for(let i=0; i< 10;i++){
-	console.time('strTpl');
-	let strTplDiv = document.querySelector('#strTpl');
-let parser = new DOMParser().parseFromString(strTpl(),'text/html');
-	strTplDiv.append(parser.body.firstElementChild)
-/!*for(let i = 0; i < 100; i++){
-		strTplDiv.append(parser.body.firstElementChild)
-	}*!/
-	console.timeEnd('strTpl');
-}*/
-let strTplDiv = document.querySelector('#strTpl');
-//console.log(F.el(domTpl(strTpl())))
-strTplDiv.append(
-	F.el(strTpl())
-)
+
 
 
 
