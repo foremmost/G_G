@@ -4,26 +4,39 @@ export default class G_G{
 		_.handlersName = Symbol('handlers');
 		_[_.handlersName] = [];
 		_.stateName = Symbol('state');
-		_[_.stateName] = new Proxy({},{});
-		_.setData();
+		_._stateName = Symbol('state');
+		_[_._stateName] = {};
+		_[_.stateName] = new Proxy({},{
+			get: (target,prop) =>_[_._stateName][prop],
+			set:(t,p,v)=>{
+				Reflect.set(_[_._stateName],p,v);
+				_.updateView();
+				return true;
+			}
+		});
+		_.define();
 		_.init();
 
 		_.updateView();
 	}
-	logic(){
+	el(domStr){
 		const _ = this;
-
+		let
+			fragment = document.createDocumentFragment(),
+			parser= new DOMParser().parseFromString(domStr,'text/html');
+		fragment.append(...parser.body.children)
+		return fragment;
 	}
 	set(state){
 		const _ = this;
 		for(let prop in state){
-			let value = state[prop];
-			_[_.stateName][prop] = value;
+			_[_.stateName][prop] = state[prop];
 		}
+		_.updateView();
 		return _[_.stateName];
 	}
 	showHandlers(){
-		console.log(this.handlers)
+		console.log(this[this.handlersName])
 	}
 	updateView(){
 		const _ = this;
