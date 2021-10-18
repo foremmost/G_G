@@ -1,5 +1,5 @@
 export default class G_G{
-	constructor(props){
+	constructor(props = {}){
 		const _ = this;
 		_.handlersName = Symbol('handlers');
 		_[_.handlersName] = [];
@@ -15,10 +15,19 @@ export default class G_G{
 			}
 		});
 		_.define();
-		_.init();
-
+		_.defineInitMethod(props);
 		_.updateView();
 	}
+	defineInitMethod(props){
+		const _ = this;
+		if(!( (props.init ?? 'init') in _) ){
+			throw Error('G_G: No initialization method declared');
+		}else{
+			_[props.init ?? 'init']();
+		}
+	}
+
+
 	el(domStr){
 		const _ = this;
 		let

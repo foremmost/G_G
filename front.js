@@ -7,29 +7,27 @@ class front extends G_G{
 	define(){
 		const _ = this;
 		_.defined = _.set({
-			test: 1,
-			trTpl: _.trTpl()
+			tableBodyTpl: _.tableBodyTpl()
 		});
 	}
 	tableTpl(){
 		return `
 		<div class="container">
 			<table id="table">
-			${this.defined.trTpl}
+				${this.defined.tableBodyTpl}
 			</table>
 		</div>
 	`;
 	}
-	trTpl(){
-		let tpl = ``;
-			for(let i=0; i < 10;i++){
-				tpl+= `
-			<tr>
-				<td>${i}</td>
-			</tr>
-		`;
+	tableBodyTpl(){
+		let
+			body = ``;
+		for(let i=0; i < 10;i++){
+			body+= `
+					<td><button>${i}</button></td>
+			`;
 		}
-		return tpl;
+		return `<tr>${body}</tr>`;
 	}
 	init(){
 		const _ = this;
@@ -42,22 +40,7 @@ class front extends G_G{
 }
 let F = new front();
 
-window['F'] = F;
-
-
-
-function domTpl(){
-	let domTpl = document.createElement('DIV');
-	domTpl.className = 'container';
-	let btn = document.createElement('BUTTON');
-	btn.id= 'test';
-	domTpl.append(btn);
-	return domTpl;
-}
-
-
-
-
+window['F'] = F; // For testing reactive behavior
 
 
 
