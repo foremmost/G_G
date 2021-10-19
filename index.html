@@ -6,9 +6,20 @@
 	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>G_G reactive dom assistant</title>
+	<link rel="stylesheet" href="G_G.css">
 </head>
 <body>
-<button id="changeTest">Test change</button>
+<div class="actions-block">
+	<div>
+		<h3>Test text for this buttons</h3>
+		<input type="text" data-input="changeButtonText">
+	</div>
+	<div>
+		<h3>Size this buttons</h3>
+		<input type="text" data-input="changeButtonSize">
+	</div>
+</div>
+
 <div id="strTpl"></div>
 <div id="domTpl"></div>
 	<script src="front.js" type="module"></script>

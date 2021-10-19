@@ -5,7 +5,6 @@ export default class G_G{
 		_.initedUpdate = false;
 		_.handlersName = Symbol('handlers');
 		_[_.handlersName] = [];
-		
 		_.stateName = Symbol('state');
 		_[_.stateName] = new Proxy({},{
 			get: (t,p) =>t[p],
@@ -49,13 +48,16 @@ export default class G_G{
 	}
 	
 	/* Working with Dom methods */
-	markup(domStr){
+	markup(domStr,isFragment=true){
 		const _ = this;
 		let
 		fragment = document.createDocumentFragment(),
 		parser= new DOMParser().parseFromString(domStr,'text/html');
-		fragment.append(...parser.body.children)
-		return fragment;
+		if(isFragment){
+			fragment.append(...parser.body.children);
+			return fragment;
+		}
+		return parser.body.children;
 	}
 	f(selector){
 		let searchedItems =  document.querySelectorAll(selector);
@@ -76,7 +78,6 @@ export default class G_G{
 	
 	update(props){
 		const _ = this;
-		
 		if(!_.initedUpdate){
 			_[_.handlersName].forEach( fnObj => {
 				for(let innerProp in fnObj) {
@@ -106,9 +107,18 @@ export default class G_G{
 	_(fn,deps = []){
 		const _ = this;
 		if(!fn) return false;
-		let propObj = { [deps.toString()] : fn  };
-		if(!(~_[_.handlersName].indexOf(propObj))){
-			_[_.handlersName].push(propObj);
+		if(deps.length){
+			deps.forEach( (dep)=>{
+				let propObj = { [dep.toString()] : fn  };
+				if(!(~_[_.handlersName].indexOf(propObj))){
+					_[_.handlersName].push(propObj);
+				}
+			});
+		}else{
+			let propObj = { [deps.toString()] : fn  };
+			if(!(~_[_.handlersName].indexOf(propObj))){
+				_[_.handlersName].push(propObj);
+			}
 		}
 		
 	}

@@ -1,0 +1,27 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,600,800&display=swap);
+*{
+	padding: 0;
+	margin: 0;
+}
+h1,h2,h3,h4,h5,h6,address,b,cite,em,i,strong{font-weight:500;}h1,h2,h3,h4,h5,h6{font-size:1em;}
+body{
+	font:14px Montserrat,sans-serif;
+	font-weight: 400;
+}
+.row{
+	display: flex;
+	align-items: center;
+}
+#table td button{
+	border: 0;
+	background-color: lightskyblue;
+	padding: 50px;
+	transition: .35s ease;
+}
+#table{
+	text-align: center;
+	margin: 0 auto;
+}
+.actions-block{
+	margin: 20px;
+}
