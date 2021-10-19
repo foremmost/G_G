@@ -6,22 +6,21 @@ class front extends G_G{
 	}
 	define(){
 		const _ = this;
-		_.defined = _.set({
+		_.storage = _.set({
 			tableBodyTpl: _.tableBodyTpl()
 		});
 	}
 	tableTpl(){
 		return `
-		<div class="container">
-			<table id="table">
-				${this.defined.tableBodyTpl}
-			</table>
-		</div>
-	`;
+			<div class="container">
+				<table id="table">
+					${this.storage.tableBodyTpl}
+				</table>
+			</div>
+		`;
 	}
 	tableBodyTpl(){
-		let
-			body = ``;
+		let body = ``;
 		for(let i=0; i < 10;i++){
 			body+= `
 					<td><button>${i}</button></td>
@@ -31,7 +30,7 @@ class front extends G_G{
 	}
 	init(){
 		const _ = this;
-		_.view(()=>{
+		_._(()=>{
 			let strTplDiv = document.querySelector('#strTpl');
 			strTplDiv.innerHTML = '';
 			strTplDiv.append(_.el(_.tableTpl()));

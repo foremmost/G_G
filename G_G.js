@@ -4,19 +4,25 @@ export default class G_G{
 		_.handlersName = Symbol('handlers');
 		_[_.handlersName] = [];
 		_.stateName = Symbol('state');
-		_._stateName = Symbol('state');
-		_[_._stateName] = {};
 		_[_.stateName] = new Proxy({},{
-			get: (target,prop) =>_[_._stateName][prop],
+			get: (t,prop) =>t[prop],
 			set:(t,p,v)=>{
-				Reflect.set(_[_._stateName],p,v);
+				Reflect.set(t,p,v);
 				_.updateView();
 				return true;
 			}
 		});
-		_.define();
+		_.defineDefineMethod(props);
 		_.defineInitMethod(props);
 		_.updateView();
+	}
+	defineDefineMethod(props){
+		const _ = this;
+		if(!( (props.define ?? 'define') in _) ){
+			throw Error('G_G: No define method declared');
+		}else{
+			_[props.define ?? 'define']();
+		}
 	}
 	defineInitMethod(props){
 		const _ = this;
@@ -26,7 +32,6 @@ export default class G_G{
 			_[props.init ?? 'init']();
 		}
 	}
-
 
 	el(domStr){
 		const _ = this;
@@ -44,14 +49,12 @@ export default class G_G{
 		_.updateView();
 		return _[_.stateName];
 	}
-	showHandlers(){
-		console.log(this[this.handlersName])
-	}
+
 	updateView(){
 		const _ = this;
 		_[_.handlersName].forEach( fn => fn() );
 	}
-	view(fn){
+	_(fn){
 		const _ = this;
 		if(!fn) return false;
 		if(!(~_[_.handlersName].indexOf(fn))){
