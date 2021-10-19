@@ -14,7 +14,7 @@ export default class G_G{
 		});
 		_.defineDefineMethod(props);
 		_.defineInitMethod(props);
-		_.updateView();
+		_.update();
 	}
 	defineDefineMethod(props){
 		const _ = this;
@@ -33,14 +33,7 @@ export default class G_G{
 		}
 	}
 
-	el(domStr){
-		const _ = this;
-		let
-			fragment = document.createDocumentFragment(),
-			parser= new DOMParser().parseFromString(domStr,'text/html');
-		fragment.append(...parser.body.children)
-		return fragment;
-	}
+	
 	set(state){
 		const _ = this;
 		for(let prop in state){
@@ -49,8 +42,16 @@ export default class G_G{
 		_.updateView();
 		return _[_.stateName];
 	}
-
-	updateView(){
+	el(domStr){
+		const _ = this;
+		let
+		fragment = document.createDocumentFragment(),
+		parser= new DOMParser().parseFromString(domStr,'text/html');
+		fragment.append(...parser.body.children)
+		return fragment;
+	}
+	
+	update(){
 		const _ = this;
 		_[_.handlersName].forEach( fn => fn() );
 	}
