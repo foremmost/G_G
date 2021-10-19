@@ -30,11 +30,27 @@ class front extends G_G{
 	}
 	init(){
 		const _ = this;
+		
+		_.f('#changeTest').onclick = ()=>{
+			_.set({
+				test: Math.random(),
+				a: Math.random(),
+			})
+		}
+		
 		_._(()=>{
 			let strTplDiv = _.f('#strTpl');
 			_.clear(strTplDiv);
 			strTplDiv.append(_.markup(_.tableTpl()));
+		},['s']);
+		_._(()=>{
+			let domTplDiv = _.f('#table td:nth-child(3)');
+			domTplDiv.textContent = _.storage.test;
 		});
+		_._(()=>{
+			let domTplDiv = _.f('#domTpl');
+			domTplDiv.textContent = _.storage.a;
+		},['s']);
 	}
 }
 let F = new front();

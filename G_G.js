@@ -1,20 +1,24 @@
 export default class G_G{
 	constructor(props){
 		const _ = this;
+	
+		_.initedUpdate = false;
 		_.handlersName = Symbol('handlers');
 		_[_.handlersName] = [];
+		
 		_.stateName = Symbol('state');
 		_[_.stateName] = new Proxy({},{
-			get: (t,prop) =>t[prop],
+			get: (t,p) =>t[p],
 			set:(t,p,v)=>{
 				Reflect.set(t,p,v);
-				_.update();
+				_.update([p]);
 				return true;
 			}
 		});
 		_.defineDefineMethod(props);
 		_.defineInitMethod(props);
 		_.update();
+		_.initedUpdate = true;
 	}
 	defineDefineMethod(props){
 		const _ = this;
@@ -32,14 +36,14 @@ export default class G_G{
 			_[props?.init ?? 'init']();
 		}
 	}
-
+	
 	
 	set(state){
 		const _ = this;
 		for(let prop in state){
 			_[_.stateName][prop] = state[prop];
 		}
-		_.update();
+		//_.update(props);
 		_.storage = _[_.stateName]
 		return _.storage;
 	}
@@ -70,15 +74,47 @@ export default class G_G{
 	}
 	/* Working with Dom methods */
 	
-	update(){
+	update(props){
 		const _ = this;
-		_[_.handlersName].forEach( fn => fn() );
+		
+		if(!_.initedUpdate){
+			_[_.handlersName].forEach( fnObj => {
+				for(let innerProp in fnObj) {
+					fnObj[innerProp]();
+				}
+			});
+		}
+		if( (!props)  ){
+			_[_.handlersName].forEach( fnObj => {
+				for(let innerProp in fnObj) {
+					fnObj[innerProp]();
+				}
+			});
+			return void 0;
+		}
+		_[_.handlersName].forEach( fnObj => {
+			for(let innerProp in fnObj){
+				if(~props.indexOf(innerProp)){
+					fnObj[innerProp]();
+				}
+			}
+		});
+		
+		//
+		_[_.handlersName].forEach( fnObj => {
+			for(let innerProp in fnObj) {
+				if(innerProp == '')	fnObj[innerProp]();
+			}
+		});
+		
 	}
-	_(fn){
+	_(fn,deps = []){
 		const _ = this;
 		if(!fn) return false;
-		if(!(~_[_.handlersName].indexOf(fn))){
-			_[_.handlersName].push(fn);
+		let propObj = { [deps.toString()] : fn  };
+		if(!(~_[_.handlersName].indexOf(propObj))){
+			_[_.handlersName].push(propObj);
 		}
+		
 	}
 }
