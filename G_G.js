@@ -96,16 +96,11 @@ export default class G_G{
 			for(let innerProp in fnObj){
 				if(~props.indexOf(innerProp)){
 					fnObj[innerProp]();
-				}
+				}else if(innerProp === '')	fnObj[innerProp]();
 			}
 		});
 		
 		//
-		_[_.handlersName].forEach( fnObj => {
-			for(let innerProp in fnObj) {
-				if(innerProp == '')	fnObj[innerProp]();
-			}
-		});
 		
 	}
 	_(fn,deps = []){

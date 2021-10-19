@@ -49,8 +49,8 @@ class front extends G_G{
 		});
 		_._(()=>{
 			let domTplDiv = _.f('#domTpl');
-			domTplDiv.textContent = _.storage.a;
-		},['s']);
+			domTplDiv.textContent = _.storage.test;
+		},['a']);
 	}
 }
 let F = new front();
