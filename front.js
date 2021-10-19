@@ -6,7 +6,7 @@ class front extends G_G{
 	}
 	define(){
 		const _ = this;
-		_.storage = _.set({
+		_.set({
 			tableBodyTpl: _.tableBodyTpl()
 		});
 	}
@@ -32,7 +32,7 @@ class front extends G_G{
 		const _ = this;
 		_._(()=>{
 			let strTplDiv = _.f('#strTpl');
-			_.clear(_.f);
+			_.clear(strTplDiv);
 			strTplDiv.append(_.markup(_.tableTpl()));
 		});
 	}

@@ -1,5 +1,5 @@
 export default class G_G{
-	constructor(props = {}){
+	constructor(props){
 		const _ = this;
 		_.handlersName = Symbol('handlers');
 		_[_.handlersName] = [];
@@ -18,18 +18,18 @@ export default class G_G{
 	}
 	defineDefineMethod(props){
 		const _ = this;
-		if(!( (props.define ?? 'define') in _) ){
+		if(!( (props?.define ?? 'define') in _) ){
 			throw Error('G_G: No define method declared');
 		}else{
-			_[props.define ?? 'define']();
+			_[props?.define ?? 'define']();
 		}
 	}
 	defineInitMethod(props){
 		const _ = this;
-		if(!( (props.init ?? 'init') in _) ){
+		if(!( (props?.init ?? 'init') in _) ){
 			throw Error('G_G: No initialization method declared');
 		}else{
-			_[props.init ?? 'init']();
+			_[props?.init ?? 'init']();
 		}
 	}
 
@@ -40,7 +40,8 @@ export default class G_G{
 			_[_.stateName][prop] = state[prop];
 		}
 		_.update();
-		return _[_.stateName];
+		_.storage = _[_.stateName]
+		return _.storage;
 	}
 	
 	/* Working with Dom methods */
