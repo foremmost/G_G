@@ -8,7 +8,7 @@ export default class G_G{
 			get: (t,prop) =>t[prop],
 			set:(t,p,v)=>{
 				Reflect.set(t,p,v);
-				_.updateView();
+				_.update();
 				return true;
 			}
 		});
@@ -39,10 +39,12 @@ export default class G_G{
 		for(let prop in state){
 			_[_.stateName][prop] = state[prop];
 		}
-		_.updateView();
+		_.update();
 		return _[_.stateName];
 	}
-	el(domStr){
+	
+	/* Working with Dom methods */
+	markup(domStr){
 		const _ = this;
 		let
 		fragment = document.createDocumentFragment(),
@@ -50,6 +52,22 @@ export default class G_G{
 		fragment.append(...parser.body.children)
 		return fragment;
 	}
+	f(selector){
+		let searchedItems =  document.querySelectorAll(selector);
+		if( this instanceof HTMLElement ){
+			searchedItems = this.querySelectorAll(selector);
+		}
+		if(!searchedItems.length) return null;
+		if(searchedItems.length === 1) return  searchedItems[0];
+		return searchedItems;
+	}
+	clear(domElement){
+		if(!domElement) return void 0;
+		if(domElement instanceof HTMLElement){
+			domElement.innerHTML = null;
+		}
+	}
+	/* Working with Dom methods */
 	
 	update(){
 		const _ = this;

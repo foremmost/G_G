@@ -31,9 +31,9 @@ class front extends G_G{
 	init(){
 		const _ = this;
 		_._(()=>{
-			let strTplDiv = document.querySelector('#strTpl');
-			strTplDiv.innerHTML = '';
-			strTplDiv.append(_.el(_.tableTpl()));
+			let strTplDiv = _.f('#strTpl');
+			_.clear(_.f);
+			strTplDiv.append(_.markup(_.tableTpl()));
 		});
 	}
 }
