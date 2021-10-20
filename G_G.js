@@ -4,6 +4,9 @@ export default class G_G{
 		_.initedUpdate = false;
 		_.handlersName = Symbol('handlers');
 		_[_.handlersName] = [];
+
+		//_.tempObj = {};
+
 		_.stateName = Symbol('state');
 		let validator = {
 			get: (target,key) =>{
@@ -15,12 +18,51 @@ export default class G_G{
 			},
 			set:(t,p,v)=>{
 				Reflect.set(t,p,v);
+				if(!_.deepEqual(t,_.tempObj)){
+					_.tempObj = Object.assign({},t);
+				}
 				_.update([p]);
 				return true;
 			}
 		}
 		_[_.stateName] = new Proxy({},validator);
 		_.ii(props);
+	}
+	deepEqual( param1,param2  ) {
+		const _ = this;
+		let deep = false;
+		if( param1 && param2){
+			if((typeof param1 === 'object') && (typeof param2 === 'object')){
+				let len1 = Object.keys(param1).length,
+					len2 = Object.keys(param2).length;
+				if(len1 === len2){
+					let qual = false;
+					for(let i = 0; i < len1; i++){
+						qual = (Object.keys(param1)[i] === Object.keys(param2)[i])
+					}
+					if(qual){
+						for(let prop in param1){
+							if((typeof param1[prop] === 'object') && (typeof param2[prop] === 'object')) {
+								deep = _.deepEqual(param1[prop],param2[prop]);
+								if(!deep) break;
+							}else if(param1[prop] !== param2[prop]){
+								deep = false;
+								break;
+							}
+							deep = true;
+						}
+						return deep;
+					}
+				}
+			}
+		}
+		if(param1 === param2){
+			deep =  true;
+		}else{
+			deep = false;
+		}
+
+		return deep;
 	}
 	defineDefineMethod(props){
 		const _ = this;

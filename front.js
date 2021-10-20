@@ -12,7 +12,7 @@ class front extends G_G{
 	changeButtonText(inputData){
 		const _ = this;
 		_.set({
-			text: inputData['item'].value
+			text: inputData['item'].value,
 		})
 	}
 	changeButtonSize(inputData){
@@ -64,8 +64,7 @@ class front extends G_G{
 				btn.textContent = _.storage.text;
 				btn.style.padding = `${isNaN(_.storage.buttonSize) ? 25 : _.storage.buttonSize}px`;
 			});
-		},['buttonSize']);
-
+		},['text','buttonSize']);
 	}
 }
 let F = new front();
