@@ -77,6 +77,7 @@ class _G_Control{
 	}
 	scrollHandler(e){
 		let item = e.target;
+		if(!item.dataset) return;
 		if( ('scroll' in item.dataset) ){
 			triggerWithEvent({'item':item,'event':e},'scroll');
 			return;
