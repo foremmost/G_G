@@ -9,12 +9,16 @@ export default class G_G{
 
 		_.stateName = Symbol('state');
 		let validator = {
-			get: (target,key) =>{
+			get:(target,key) =>{
 				if (typeof target[key] === 'object') {
-					return new Proxy(target[key], validator)
-				} else {
-					return target[key];
+					if(!target['isProxy']){
+						target['isProxy'] = false;
+						return new Proxy(target[key], validator)
+					}else{
+						return target[key];
+					}
 				}
+				return target[key];
 			},
 			set:(t,p,v)=>{
 				Reflect.set(t,p,v);
@@ -26,23 +30,26 @@ export default class G_G{
 			}
 		}
 		_[_.stateName] = new Proxy({},validator);
-		_.ii(props);
+		_.start(props);
 	}
-	deepEqual( param1,param2  ) {
+	isObjects(obj1,obj2){
+		return (typeof obj1 === 'object') && (typeof obj2 === 'object');
+	}
+	deepEqual( param1,param2 ) {
 		const _ = this;
 		let deep = false;
 		if( param1 && param2){
 			if((typeof param1 === 'object') && (typeof param2 === 'object')){
-				let len1 = Object.keys(param1).length,
-					len2 = Object.keys(param2).length;
+				let len1 = Object.getOwnPropertyNames(param1).length,
+					len2 = Object.getOwnPropertyNames(param2).length;
 				if(len1 === len2){
 					let qual = false;
 					for(let i = 0; i < len1; i++){
-						qual = (Object.keys(param1)[i] === Object.keys(param2)[i])
+						qual = (Object.getOwnPropertyNames(param1)[i] === Object.getOwnPropertyNames(param2)[i]);
 					}
 					if(qual){
 						for(let prop in param1){
-							if((typeof param1[prop] === 'object') && (typeof param2[prop] === 'object')) {
+							if( _.isObjects(param1[prop],param2[prop]) ) {
 								deep = _.deepEqual(param1[prop],param2[prop]);
 								if(!deep) break;
 							}else if(param1[prop] !== param2[prop]){
@@ -91,7 +98,6 @@ export default class G_G{
 		for(let prop in state){
 			_[_.stateName][prop] = state[prop];
 		}
-		//_.update(props);
 		_.storage = _[_.stateName]
 		return _.storage;
 	}
@@ -123,7 +129,6 @@ export default class G_G{
 			domElement.innerHTML = null;
 		}
 	}
-	//171.315
 	/* Working with Dom methods */
 
 	update(props){
@@ -177,7 +182,7 @@ export default class G_G{
 
 	}
 
-	async ii(props){
+	async start(props){
 		const _ = this;
 		await _.defineDefineMethod(props);
 		await _.defineInitMethod(props);

@@ -8,6 +8,13 @@ class front extends G_G{
 
 		G_Bus.on('changeButtonText',_.changeButtonText.bind(_));
 		G_Bus.on('changeButtonSize',_.changeButtonSize.bind(_));
+		G_Bus.on('changeTestValue',_.changeTestValue.bind(_));
+	}
+	changeTestValue(inputData){
+		const _ = this;
+		_.set({
+			testValue: inputData['item'].value
+		});
 	}
 	changeButtonText(inputData){
 		const _ = this;
@@ -21,14 +28,6 @@ class front extends G_G{
 			buttonSize: parseInt(inputData['item'].value)
 		})
 	}
-	define(){
-		const _ = this;
-		 _.set({
-			text: 0,
-			buttonSize: 25,
-			tableBodyTpl: _.tableBodyTpl
-		});
-	}
 	tableTpl(){
 		return `
 			<div class="container">
@@ -38,19 +37,28 @@ class front extends G_G{
 			</div>
 		`;
 	}
-	tableBodyTpl(){
+	tableBodyTpl(props){
 		// Now here this -> Proxy object from G_G
 		let body = ``;
 		for(let i=0; i < 10;i++){
 			body+= `
-					<td><button>${i}</button></td>
+				<td><button>${i}</button></td>
 			`;
 		}
 		return `<tr>${body}</tr>`;
 	}
+	
+	async define(){
+		const _ = this;
+		 _.set({
+			text: 0,
+			buttonSize: 25,
+			tableBodyTpl: _.tableBodyTpl,
+  		testValue: 0
+		});
+	}
 	init(){
 		const _ = this;
-
 		_._(()=>{
 			let strTplDiv = _.f('#strTpl');
 			_.clear(strTplDiv);
@@ -58,17 +66,18 @@ class front extends G_G{
 		},['s']);
 		//
 
-		_._(()=>{
+		_._(async ()=>{
 			let buttons = _.f('#table td button');
+			
 			buttons.forEach( btn=>{
 				btn.textContent = _.storage.text;
 				btn.style.padding = `${isNaN(_.storage.buttonSize) ? 25 : _.storage.buttonSize}px`;
 			});
 		},['text','buttonSize']);
+	
+	
 	}
 }
 let F = new front();
-
-
 
 

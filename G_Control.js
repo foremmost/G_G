@@ -79,8 +79,7 @@ class _G_Control{
 		let item = e.target;
 		if(!item.dataset) return;
 		if( ('scroll' in item.dataset) ){
-			triggerWithEvent({'item':item,'event':e},'scroll');
-			return;
+			return triggerWithEvent({'item':item,'event':e},'scroll');
 		}
 	}
 	overHandler(e){
@@ -167,4 +166,4 @@ class _G_Control{
 
 const G_Control = new _G_Control();
 
-export {G_Control,G_Bus}
+export { G_Control, G_Bus }
