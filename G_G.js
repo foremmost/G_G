@@ -98,8 +98,8 @@ export default class G_G{
 		for(let prop in state){
 			_[_.stateName][prop] = state[prop];
 		}
-		_.$ = _[_.stateName]
-		return _.$;
+		_._$ = _[_.stateName]
+		return _._$;
 	}
 
 	/* Working with Dom methods */

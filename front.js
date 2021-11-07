@@ -32,7 +32,7 @@ class front extends G_G{
 		return `
 			<div class="container">
 				<table id="table">
-					${this.$?.tableBodyTpl()}
+					${this._$?.tableBodyTpl()}
 				</table>
 			</div>
 		`;
@@ -70,8 +70,8 @@ class front extends G_G{
 			let buttons = _.f('#table td button');
 			
 			buttons.forEach( btn=>{
-				btn.textContent = _.$.text;
-				btn.style.padding = `${isNaN(_.$.buttonSize) ? 25 : _.$.buttonSize}px`;
+				btn.textContent = _._$.text;
+				btn.style.padding = `${isNaN(_._$.buttonSize) ? 25 : _._$.buttonSize}px`;
 			});
 		},['text','buttonSize']);
 	
