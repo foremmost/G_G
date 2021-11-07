@@ -32,7 +32,7 @@ class front extends G_G{
 		return `
 			<div class="container">
 				<table id="table">
-					${this.storage?.tableBodyTpl()}
+					${this.$?.tableBodyTpl()}
 				</table>
 			</div>
 		`;
@@ -63,15 +63,15 @@ class front extends G_G{
 			let strTplDiv = _.f('#strTpl');
 			_.clear(strTplDiv);
 			strTplDiv.append(_.markup(_.tableTpl()));
-		},['s']);
+		});
 		//
 
 		_._(async ()=>{
 			let buttons = _.f('#table td button');
 			
 			buttons.forEach( btn=>{
-				btn.textContent = _.storage.text;
-				btn.style.padding = `${isNaN(_.storage.buttonSize) ? 25 : _.storage.buttonSize}px`;
+				btn.textContent = _.$.text;
+				btn.style.padding = `${isNaN(_.$.buttonSize) ? 25 : _.$.buttonSize}px`;
 			});
 		},['text','buttonSize']);
 	
